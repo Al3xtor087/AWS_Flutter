@@ -1,5 +1,6 @@
-
+--------------------------------------------------------------------------------
 SISTEMA DE CONTROL DE ASISTENCIA E INCIDENCIAS (CIT)
+--------------------------------------------------------------------------------
 
 Este repositorio contiene el codigo fuente de un sistema integral para la gestion 
 de asistencias e incidencias de alumnos. El proyecto esta disenado con una 

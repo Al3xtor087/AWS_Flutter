@@ -1,0 +1,518 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: CRUD Modelo Dual - Lab 7.2 con Autenticación Cognito
+
+Globals:
+  Function:
+    Timeout: 60
+    MemorySize: 128
+    Runtime: python3.12
+    Architectures:
+      - x86_64
+    Environment:
+      Variables:
+        TABLA_ALUMNOS: !Ref AlumnosBD
+        TABLA_ASISTENCIAS: !Ref AsistenciasBD
+        TABLA_USUARIOS: !Ref UsuariosBD
+        TIMEZONE: America/Mexico_City
+
+Resources:
+  # -------------------------------------------------------------
+  # 0. Configuración de API Gateway con Cognito
+  # -------------------------------------------------------------u
+  ApiModeloDual:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors:
+        AllowMethods: "'GET,POST,PUT,DELETE,PATCH,OPTIONS'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+        AllowOrigin: "'*'"
+      Auth:
+        DefaultAuthorizer: MiCognitoAuthorizer
+        AddDefaultAuthorizerToCorsPreflight: false
+        Authorizers:
+          MiCognitoAuthorizer:
+            UserPoolArn: "arn:aws:cognito-idp:us-east-1:551322107690:userpool/us-east-1_qRXCPRfAr"
+            Identity:
+              Header: Authorization
+
+# -------------------------------------------------------------
+  # 1. Base de Datos para Alumnos
+  # -------------------------------------------------------------
+  AlumnosBD:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: AlumnosBD
+      PrimaryKey:
+        Name: id
+        Type: String
+
+  # -------------------------------------------------------------
+  # 2. Base de Datos para Asistencias e Incidencias unificadas
+  # -------------------------------------------------------------
+  AsistenciasBD:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: AsistenciasBD
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: fecha
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH # Partition key
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      GlobalSecondaryIndexes:
+        - IndexName: FechaIndex
+          KeySchema:
+            - AttributeName: fecha
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+
+  # -------------------------------------------------------------
+  # 2.1. Base de Datos para Usuarios del Sistema (Cuentas)
+  # -------------------------------------------------------------
+  UsuariosBD:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: UsuariosBD
+      PrimaryKey:
+        Name: id
+        Type: String
+
+  # -------------------------------------------------------------
+  # 2.2. Tablas de Catálogo
+  # -------------------------------------------------------------
+  CarrerasBD:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: CarrerasBD
+      PrimaryKey:
+        Name: id
+        Type: String
+
+  ProyectosBD:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: ProyectosBD
+      PrimaryKey:
+        Name: id
+        Type: String
+
+  DocentesBD:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: DocentesBD
+      PrimaryKey:
+        Name: id
+        Type: String
+
+  ParticipacionesBD:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ParticipacionesBD
+      AttributeDefinitions:
+        - AttributeName: id # Clave primaria de la participación
+          AttributeType: S
+        - AttributeName: alumnoId # Clave para el índice secundario
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      GlobalSecondaryIndexes:
+        - IndexName: AlumnoIdIndex
+          KeySchema:
+            - AttributeName: alumnoId
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+  
+  IncidenciasBD:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: IncidenciasBD
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: fecha
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      GlobalSecondaryIndexes:
+        - IndexName: FechaIndex
+          KeySchema:
+            - AttributeName: fecha
+              KeyType: HASH
+          Projection: { ProjectionType: ALL }
+          ProvisionedThroughput: { ReadCapacityUnits: 5, WriteCapacityUnits: 5 }
+
+  # -------------------------------------------------------------
+  # 3. Endpoints / Funciones Lambda para el CRUD
+  # -------------------------------------------------------------
+
+  # Endpoint 1: Crear Alumno (POST /alumnos)
+  CrearAlumnoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: crear.crearAlumno
+      Environment:
+        Variables:
+          # Hereda TABLA_ALUMNOS de Globals, pero añadimos las de catálogo
+          TABLA_CARRERAS: !Ref CarrerasBD
+          TABLA_PROYECTOS: !Ref ProyectosBD
+          TABLA_DOCENTES: !Ref DocentesBD
+          TABLA_PARTICIPACIONES: !Ref ParticipacionesBD
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /alumnos
+            Method: post
+            RestApiId: !Ref ApiModeloDual
+
+  # Endpoint 2: Consultar Alumnos sin cuenta
+  ObtenerAlumnosFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: listar_alumnos_sin_cuenta.obtenerAlumnos
+      Policies:
+        - AmazonDynamoDBReadOnlyAccess
+        - AmazonCognitoReadOnly
+      Environment:
+        Variables:
+          USER_POOL_ID: "us-east-1_qRXCPRfAr"
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /alumnos
+            Method: get
+            RestApiId: !Ref ApiModeloDual
+            Auth:
+              Authorizer: NONE
+
+  # Endpoint 3: Consultar 1 Elemento (GET /alumnos/{id})
+  ObtenerAlumnoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: obtenerUno.obtenerAlumno
+      Policies: AmazonDynamoDBReadOnlyAccess
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /alumnos/{id}
+            Method: get
+            RestApiId: !Ref ApiModeloDual
+
+  # Endpoint 4: Modificar Alumno (PUT /alumnos/{id})
+  ModificarAlumnoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: modificar.modificarAlumno
+      Environment:
+        Variables:
+          TABLA_CARRERAS: !Ref CarrerasBD
+          TABLA_PROYECTOS: !Ref ProyectosBD
+          TABLA_DOCENTES: !Ref DocentesBD
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /alumnos/{id}
+            Method: put
+            RestApiId: !Ref ApiModeloDual
+
+  # Endpoint 5: Eliminar Alumno (DELETE /alumnos/{id})
+  EliminarAlumnoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: eliminar.eliminarAlumno
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /alumnos/{id}
+            Method: delete
+            RestApiId: !Ref ApiModeloDual
+
+  # Endpoint 6: Registrar Asistencia (POST /asistencias)
+  RegistrarAsistenciaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: registrar_asistencia.lambda_handler
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /asistencias
+            Method: post
+            RestApiId: !Ref ApiModeloDual
+            Auth: 
+              Authorizer: NONE
+
+  # Endpoint 7: Listar Incidencias por Fecha / Listado con Filtros
+  ListarIncidenciasFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: listar_incidencias.lambda_handler
+      Policies: AmazonDynamoDBReadOnlyAccess
+      Events:
+        ApiListado:
+          Type: Api
+          Properties:
+            # Ruta para listados (con filtros o por fecha)
+            Path: /incidencias/listado
+            Method: get
+            RestApiId: !Ref ApiModeloDual
+        ApiListadoPorFecha:
+          Type: Api
+          Properties:
+            # Ruta específica para obtener por fecha
+            Path: /incidencias/fecha/{fecha}
+            Method: get
+            RestApiId: !Ref ApiModeloDual
+
+  # Endpoint 7.1: Operaciones sobre una incidencia específica (DELETE, PUT)
+  IncidenciaIndividualFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: incidencia_individual.lambda_handler
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /incidencias/{id}
+            Method: patch
+            RestApiId: !Ref ApiModeloDual
+        ApiEventPut:
+          Type: Api
+          Properties:
+            Path: /incidencias/{id}
+            Method: put
+            RestApiId: !Ref ApiModeloDual
+        ApiEventDelete:
+          Type: Api
+          Properties:
+            Path: /incidencias/{id}
+            Method: delete
+            RestApiId: !Ref ApiModeloDual
+
+# Endpoint 8: Generador Automático Nocturno de Incidencias (Sin Auth porque corre interno por Cron)
+  GeneradorIncidenciasFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: generar_incidencias.lambda_handler
+      Policies:
+        - AmazonDynamoDBFullAccess
+      Environment:
+        Variables:
+          TABLA_INCIDENCIAS: !Ref IncidenciasBD
+          TABLA_PARTICIPACIONES: !Ref ParticipacionesBD
+      Events:
+        CorteNocturnoCron:
+          Type: Schedule
+          Properties:
+            Schedule: "cron(59 23 * * ? *)"
+
+# Endpoint 9: Registro público de usuarios en Cognito (POST /auth/registrar)
+  RegistrarUsuarioFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: registrar_usuario.lambda_handler
+      Policies:
+        - AmazonDynamoDBFullAccess
+        - AmazonCognitoPowerUser
+      Environment:
+        Variables:
+          USER_POOL_ID: "us-east-1_qRXCPRfAr"
+          COGNITO_CLIENT_ID: "4j2jmr8chi2u1o89tdg1q661h8"
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /auth/registrar
+            Method: post
+            RestApiId: !Ref ApiModeloDual
+            Auth:
+              Authorizer: NONE
+
+# Endpoint 10: Inicio de sesión manual en Cognito (POST /auth/login)
+  # Endpoint 10: Inicio de sesión manual en Cognito (POST /auth/login)
+  LoginUsuarioFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: login_usuario.lambda_handler
+      Policies:
+        - AmazonCognitoPowerUser
+      Environment:
+        Variables:
+          USER_POOL_ID: "us-east-1_qRXCPRfAr"
+          COGNITO_CLIENT_ID: "4j2jmr8chi2u1o89tdg1q661h8"
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /auth/login
+            Method: post
+            RestApiId: !Ref ApiModeloDual
+            Auth:
+              Authorizer: NONE
+
+# Endpoint 11: Obtener perfil del usuario autenticado (GET /auth/perfil)
+  PerfilUsuarioFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: perfil_usuario.lambda_handler
+      Policies:
+        - AmazonDynamoDBReadOnlyAccess
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /auth/perfil
+            Method: get
+            RestApiId: !Ref ApiModeloDual
+            Auth:
+              Authorizer: MiCognitoAuthorizer
+
+  # Endpoint 12: Consultar ABSOLUTAMENTE TODOS los Alumnos (GET /alumnos/todos)
+  ObtenerTodosLosAlumnosFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: listar_todos.lambda_handler
+      Policies:
+        - AmazonDynamoDBReadOnlyAccess
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /alumnos/todos
+            Method: get
+            RestApiId: !Ref ApiModeloDual
+
+  ListarUsuariosFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: listar_usuarios.lambda_handler
+      Runtime: python3.12
+      Events:
+        ListarUsuariosEvent:
+          Type: Api
+          Properties:
+            Path: /usuarios
+            Method: get
+            RestApiId: !Ref ApiModeloDual
+      Policies:
+        - AmazonDynamoDBReadOnlyAccess
+
+  # Endpoint 13: Funciones de Administración (Cambiar Rol, Vincular Alumno)
+  AdminUsuariosFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: admin_usuarios.lambda_handler
+      Policies:
+        - AmazonDynamoDBFullAccess
+        - AmazonCognitoPowerUser
+      Environment:
+        Variables:
+          USER_POOL_ID: "us-east-1_qRXCPRfAr"
+          TABLA_ALUMNOS: !Ref AlumnosBD
+          TABLA_USUARIOS: !Ref UsuariosBD
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /admin/{proxy+}
+            Method: any
+            RestApiId: !Ref ApiModeloDual
+
+  # Endpoint 14: Funciones para listar catálogos (Carreras, Proyectos, etc.)
+  ListarCatalogosFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: listar_catalogos.lambda_handler
+      Policies:
+        - AmazonDynamoDBReadOnlyAccess
+      Environment:
+        Variables:
+          TABLA_CARRERAS: !Ref CarrerasBD
+          TABLA_PROYECTOS: !Ref ProyectosBD
+          TABLA_DOCENTES: !Ref DocentesBD
+      Events:
+        CarrerasEvent:
+          Type: Api
+          Properties:
+            Path: /carreras
+            Method: get
+            RestApiId: !Ref ApiModeloDual
+            Auth:
+              Authorizer: NONE
+        ProyectosEvent:
+          Type: Api
+          Properties:
+            Path: /proyectos
+            Method: get
+            RestApiId: !Ref ApiModeloDual
+            Auth:
+              Authorizer: NONE
+        DocentesEvent:
+          Type: Api
+          Properties:
+            Path: /docentes
+            Method: get
+            RestApiId: !Ref ApiModeloDual
+            Auth:
+              Authorizer: NONE
+        TipoParticipacionEvent:
+          Type: Api
+          Properties:
+            Path: /tipo-participacion
+            Method: get
+            RestApiId: !Ref ApiModeloDual
+            Auth:
+              Authorizer: NONE
+
+Outputs:
+  CoreApiUrl:
+    Description: "URL de la API local o en la nube para el CRUD"
+    Value: !Sub "https://${ApiModeloDual}.execute-api.${AWS::Region}.amazonaws.com/Prod/alumnos"

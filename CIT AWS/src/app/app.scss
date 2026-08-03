@@ -1,0 +1,15 @@
+.container {
+    display: block;
+    width: 100%;
+    padding-top: 0;
+    transition: padding-top 0.3s ease;
+
+    &.con-navbar {
+        padding-top: 81px;
+    }
+}
+
+body {
+    /* Si tu navbar mide 56px (estándar de Bootstrap), añade esto: */
+    padding-top: 70px;
+}

@@ -1,0 +1,15 @@
+<div class="card shadow-sm w-100 border-0 rounded-4">
+    <div class="card-header bg-primary test-white d-flex justify-content-between align-items-center py-3 rounded-top-4">
+        <div class="d-flex align-items-center text-white">
+            <ng-content select="[card-title]"></ng-content>
+        </div>
+
+        <div class="card-actions">
+            <ng-content select="[card-actions]"></ng-content>
+        </div>
+    </div>
+
+    <div class="card-body p-4">
+        <ng-content></ng-content>
+    </div>
+</div>

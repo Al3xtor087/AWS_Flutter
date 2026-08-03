@@ -1,0 +1,422 @@
+<div class="container-fluid text-nowrap text-truncate">
+    <div class="row mb-4 mt-4">
+        <div class="col-12 d-flex justify-content-between align-items-end">
+            <div>
+                <h2 class="text-dark fw-bold mb-0">Control de Incidencias</h2>
+                <p class="text-muted small mb-0">Gestión y monitoreo de asistencias institucionales</p>
+            </div>
+            @if (fechaFiltro()) {
+            <span class="badge rounded-pill bg-white text-primary border px-3 py-2 shadow-sm">
+                <i class="bi bi-calendar-event me-2"></i>{{ fechaFiltro() }}
+            </span>
+            }
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-3 col-sm-12 mb-4">
+            <app-card-institucional>
+                <span card-title class="fw-bold">Acciones globales</span>
+                <label for="fechaFiltro" class="form-label fw-bold">Seleccionar Fecha:</label>
+                <input type="date" id="fechaFiltro" class="form-control" [value]="fechaFiltro()"
+                    (input)="onFechaChange($event)">
+            </app-card-institucional>
+
+            <div class="mt-3">
+                <app-card-institucional>
+                    <span card-title class="fw-bold">Filtros Avanzados</span>
+
+                    <div class="d-flex justify-content-end align-items-center mb-1">
+                        <button class="btn btn-sm btn-outline-primary d-md-none w-100" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#collapseFiltros" aria-expanded="false">
+                            <i class="bi bi-filter"></i>
+                        </button>
+                    </div>
+
+                    <div class="collapse d-md-block" id="collapseFiltros">
+                        <hr class="d-md-none mb-2">
+
+                        <div class="mb-2">
+                            <label class="form-label small fw-bold text-muted mb-1">BUSCAR ALUMNO</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                                <input [formControl]="buscarControl" type="text" class="form-control"
+                                    placeholder="Nombre o No. Control...">
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="form-label small fw-bold text-muted mb-1">FILTRAR POR TIPO</label>
+                            <div class="d-flex flex-wrap gap-1">
+                                <input type="checkbox" class="btn-check" id="fRetardo" [formControl]="fRetardo">
+                                <label class="btn btn-outline-warning btn-sm border-0 py-1 px-2 custom-chip"
+                                    for="fRetardo">Retardos</label>
+
+                                <input type="checkbox" class="btn-check" id="fFalta" [formControl]="fFalta">
+                                <label class="btn btn-outline-danger btn-sm border-0 py-1 px-2 custom-chip"
+                                    for="fFalta">Faltas</label>
+
+                                <input type="checkbox" class="btn-check" id="fSalida" [formControl]="fSalida">
+                                <label class="btn btn-outline-primary btn-sm border-0 py-1 px-2 custom-chip"
+                                    for="fSalida">Salidas</label>
+
+                                <input type="checkbox" class="btn-check" id="fFueraHorario"
+                                    [formControl]="fFueraHorario">
+                                <label class="btn btn-outline-info btn-sm border-0 py-1 px-2 custom-chip"
+                                    for="fFueraHorario">Horario</label>
+
+                                <input type="checkbox" class="btn-check" id="fJustificado" [formControl]="fJustificado">
+                                <label class="btn btn-outline-success btn-sm border-0 py-1 px-2 custom-chip"
+                                    for="fJustificado">Justificados</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="form-label small fw-bold text-muted mb-1">CARRERA</label>
+                            <select class="form-select form-select-sm" [formControl]="carreraControl">
+                                <option value="">Todas las carreras</option>
+                                @for (carrera of carreras(); track carrera.clave) {
+                                <option [value]="carrera.clave">{{ carrera.nombre }}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="form-label small fw-bold text-muted mb-1">PROYECTO</label>
+                            <select class="form-select form-select-sm" [formControl]="proyectoControl">
+                                <option value="">Todos los proyectos</option>
+                                @for (proyecto of proyectos(); track proyecto.id) {
+                                <option [value]="proyecto.id">{{ proyecto.nombre }}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small fw-bold text-muted mb-1">PARTICIPACIÓN</label>
+                            <select class="form-select form-select-sm" [formControl]="tipoPartControl">
+                                <option value="">Todas las participaciones</option>
+                                @for (tipo of tiposParticipacion(); track tipo?.id) {
+                                <option [value]="tipo?.id">{{ tipo?.nombre }}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="d-grid">
+                            <button class="btn btn-light btn-sm text-primary border py-1" (click)="limpiarFiltros()">
+                                <i class="bi bi-funnel-fill me-2"></i>Limpiar Filtros
+                            </button>
+                        </div>
+                    </div>
+                </app-card-institucional>
+            </div>
+        </div>
+
+        <div class="col-lg-9 col-sm-12">
+            <div class="row g-3 mb-4">
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card-grafica-retardos card border-0 p-3 shadow-sm rounded-4 border-start border-warning border-4">
+                        <h5 class="fw-bold text-nowrap text-truncate">Retardos</h5>
+                        <div class="d-flex justify-content-between">
+                            <h1 class="text-warning fw-bold me-2">{{totalRetardos()}}</h1>
+                            <div style="height: 50px; width: 70%;">
+                                <app-grafica-incidencias [color]="'#ffc107'" [datos]="datosRetardos()"
+                                    [labels]="labelsRetardos()" [label]="'Retardos'"></app-grafica-incidencias>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card-grafica-faltas card border-0 p-3 shadow-sm rounded-4 border-start border-danger border-4">
+                        <h5 class="fw-bold text-nowrap text-truncate">Faltas</h5>
+                        <div class="d-flex justify-content-between">
+                            <h1 class="text-danger fw-bold me-2">{{totalFaltas()}}</h1>
+                            <div style="height: 50px; width: 70%;">
+                                <app-grafica-incidencias [color]="'#dc3545'" [datos]="datosFaltas()"
+                                    [labels]="labelsFaltas()" [label]="'Faltas'"></app-grafica-incidencias>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card-grafica-salidas card border-0 p-3 shadow-sm rounded-4 border-start border-primary border-4">
+                        <h5 class="fw-bold text-nowrap text-truncate">Salidas anticipadas</h5>
+                        <div class="d-flex justify-content-between">
+                            <h1 class="grafica-titulo fw-bold me-2">{{totalSalidas()}}</h1>
+                            <div style="height: 50px; width: 70%;">
+                                <app-grafica-incidencias [color]="'#1b396a'" [datos]="datosSalidas()"
+                                    [labels]="labelsSalidas()" [label]="'Salidas'"></app-grafica-incidencias>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card-grafica-fueraHorario card border-0 p-3 shadow-sm rounded-4 border-start border-info border-4">
+                        <h5 class="fw-bold text-nowrap text-truncate">Fuera de horario</h5>
+                        <div class="d-flex justify-content-between">
+                            <h1 class="text-info fw-bold me-2">{{totalFueraHorario()}}</h1>
+                            <div style="width: 70%;">
+                                <app-grafica-incidencias [color]="'#0C63E4'" [datos]="datosFueraHorario()"
+                                    [labels]="labelsFueraHorario()" [label]="'Fuera horario'"></app-grafica-incidencias>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div
+                    class="card-header bg-white py-3 border-bottom border-light d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0 fw-bold text-dark">Listado de Incidencias</h6>
+                    <button
+                        class="btn btn-light btn-sm rounded-circle me-2 text-primary border-opacity-10 border-black shadow-sm"
+                        title="Refrescar" (click)="refrescarDatos()"><i class="bi bi-arrow-clockwise"></i></button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0 custom-modern-table">
+                        <thead class="bg-light">
+                            <tr class="text-muted small">
+                                <th class="ps-4">No. Control</th>
+                                <th>Alumno</th>
+                                <th class="d-none d-md-table-cell">Carrera</th>
+                                <th>Incidencia</th>
+                                <th>Registro</th>
+                                <th class="text-end pe-4">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (item of incidenciasPaginadas(); track item.id ?? $index) {
+                            <tr [class.table-warning]="incidenciaEnEspera() === item.id" class="transition-all">
+                                @if (incidenciaEnEspera() !== item.id){
+
+                                <td class="ps-4"><span
+                                        class="badge bg-info-subtle text-primary rounded-pill px-3">{{item.numeroControl}}</span>
+                                </td>
+                                <td class="fw-medium">{{item.alumnoNombre}}</td>
+                                <td class="text-muted small d-none d-md-table-cell">{{item.carreraNombre}}</td>
+                                <td>
+                                    <span class="badge rounded-pill fw-normal px-3 py-2 w-100"
+                                        [class.bg-warning.text-warning]="item.tipoIncidencia === 'Retardo'"
+                                        [class.bg-danger.text-danger]="item.tipoIncidencia === 'Falta'"
+                                        [class.bg-primary.text-primary]="item.tipoIncidencia === 'Salida Anticipada'"
+                                        [class.bg-info.text-info]="item.tipoIncidencia === 'Fuera de Horario'"
+                                        [class.bg-success.text-success]="item.tipoIncidencia === 'Justificado'">
+                                        {{item.tipoIncidencia}}
+                                    </span>
+                                </td>
+                                <td class="text-muted font-monospace small text-center">
+                                    {{ obtenerHoraRegistro(item) }}
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="btn-group">
+                                        <button class="btn btn-light btn-sm rounded-circle me-2 text-danger"
+                                            title="Eliminar" (click)="solicitarEliminar(item.id)"><i
+                                                class="bi bi-trash"></i></button>
+                                        <button class="btn btn-light btn-sm rounded-circle text-info"
+                                            title="Más detalles" data-bs-toggle="modal"
+                                            data-bs-target="#detalleIncidenciaModal" (click)="abrirDetalles(item)"><i
+                                                class="bi bi-info-circle"></i></button>
+                                    </div>
+                                </td>
+                                } @else {
+                                <td colspan="6" class="p-0">
+                                    <div
+                                        class="d-flex justify-content-between align-items-center bg-warning bg-opacity-10 px-4 py-2 border-start border-warning border-4">
+                                        <div class="text-dark small">
+                                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                            <strong>¿Eliminar este registro?</strong> Esta acción no se puede deshacer.
+                                        </div>
+                                        <div class="btn-group shadow-sm">
+                                            <button class="btn btn-danger btn-sm px-3 fw-bold"
+                                                (click)="confirmalEliminar(item.id)">Eliminar</button>
+                                            <button class="btn btn-light btn-sm px-3"
+                                                (click)="cancelarEliminar()">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </td>
+                                }
+                            </tr>
+                            } @empty {
+                            <tr>
+                                <td colspan="6" class="text-center py-4">
+                                    <div class="text-muted">
+                                        <i class="bi bi-info-circle"></i> No se encontraron incidencias para esta fecha.
+                                    </div>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            @if (incidencias().length > itemsPorPagina()) {
+            <div class="mt-4 d-flex justify-content-between align-items-center bg-white p-3 rounded-4 shadow-sm mb-1">
+                <span class="text-muted small d-none d-md-block">Mostrando <strong>{{ incidenciasPaginadas().length
+                        }}</strong> de <strong>{{ incidencias().length }}</strong> registros</span>
+
+                <span class="text-muted small d-block d-md-none"><strong>{{ incidenciasPaginadas().length }}</strong> de
+                    <strong>{{ incidencias().length }}</strong> registros</span>
+                <nav>
+                    <ul class="pagination pagination-sm mb-0">
+                        <li class="page-item">
+                            <button class="page-link border-0 rounded-3 mx-1 bg-primary-st" (click)="anteriorPagina()"
+                                [disabled]="paginaActual() === 1 || enTransicion()">
+                                Anterior
+                            </button>
+                        </li>
+                        <li class="page-item active">
+                            <span class="page-link border-0 rounded-3 mx-1">
+                                {{ paginaActual() }} de {{ totalPaginas() }}
+                            </span>
+                        </li>
+                        <li class="page-item">
+                            <button class="page-link border-0 rounded-3 mx-1" (click)="siguientePagina()"
+                                [disabled]="paginaActual() === totalPaginas() || enTransicion()">
+                                Siguiente
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            }
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="detalleIncidenciaModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+
+                <div class="modal-header bg-primary border-0 py-3">
+                    <h5 class="modal-title fw-bold text-white mb-0" id="modalLabel">
+                        <i class="bi bi-info-circle me-2"></i>Detalles de Incidencia
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body p-0 bg-white">
+                    <div class="p-4 bg-primary bg-opacity-10 border-0">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm"
+                                    style="width: 55px; height: 55px;">
+                                    <span class="fs-4 fw-bold">{{ incidenciaSeleccionada?.alumnoNombre?.charAt(0)
+                                        }}</span>
+                                </div>
+                            </div>
+                            <div class="ms-3">
+                                <h5 class="fw-bold text-dark mb-0">{{incidenciaSeleccionada?.alumnoNombre}}</h5>
+                                <div class="text-muted small">
+                                    <span class="me-2"><i
+                                            class="bi bi-card-text me-1"></i>{{incidenciaSeleccionada?.numeroControl}}</span>
+                                    <span class="text-truncate text-wrap"><i
+                                            class="bi bi-mortarboard me-1"></i>{{incidenciaSeleccionada?.carreraNombre}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4">
+                        <div class="row g-4">
+                            <div class="col-12">
+                                <label class="text-muted small text-uppercase fw-bold mb-2 d-block">Proyecto y
+                                    Docente</label>
+                                <div class="d-flex align-items-start bg-primary bg-opacity-10 p-3 rounded-3 border">
+                                    <i class="bi bi-journal-check text-success fs-4 me-3 mt-1"></i>
+                                    <div>
+                                        <p class="fw-bold mb-0 text-dark">{{ incidenciaSeleccionada?.proyectoNombre ??
+                                            'Sin proyecto asignado' }}</p>
+                                        <p class="text-muted small mb-0">{{ incidenciaSeleccionada?.docenteResponsable
+                                            ?? 'No especificado' }}</p>
+                                        <p class="text-muted small mb-0">{{ incidenciaSeleccionada?.tipoParticipacion
+                                            ?? 'No especificado' }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <label class="text-muted small text-uppercase fw-bold mb-2 d-block">Tipo de
+                                    Incidencia</label>
+
+                                <span class="badge rounded-pill fw-normal px-3 py-2 w-100"
+                                    [class.bg-warning.text-warning]="incidenciaSeleccionada?.tipoIncidencia === 'Retardo'"
+                                    [class.bg-danger.text-danger]="incidenciaSeleccionada?.tipoIncidencia === 'Falta'"
+                                    [class.bg-primary.text-primary]="incidenciaSeleccionada?.tipoIncidencia === 'Salida Anticipada'"
+                                    [class.bg-info.text-info]="incidenciaSeleccionada?.tipoIncidencia === 'Fuera de Horario'"
+                                    [class.bg-success.text-success]="incidenciaSeleccionada?.tipoIncidencia === 'Justificado'">
+                                    {{incidenciaSeleccionada?.tipoIncidencia}}
+                                </span>
+                            </div>
+
+                            <div class="col-6">
+                                <label class="text-muted small text-uppercase fw-bold mb-2 d-block">Hora de
+                                    @if (incidenciaSeleccionada?.horaEntrada) {
+                                    Entrada
+                                    } @else if (incidenciaSeleccionada?.horaSalida) {
+                                    Salida
+                                    } @else {
+                                    Registro
+                                    }</label>
+                                <div class="bg-white p-2 rounded-3 border text-center fw-bold text-dark">
+                                    <i class="bi bi-clock me-2"></i>
+                                    {{ obtenerHoraRegistro(incidenciaSeleccionada) }}
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-2">
+                                <div class="p-3 border rounded-3 bg-white shadow-sm">
+                                    <div class="row text-center">
+                                        <div class="col-6 border-end">
+                                            <small class="text-muted d-block mb-1">Entrada Esperada</small>
+                                            <span class="fw-bold text-primary">{{
+                                                incidenciaSeleccionada?.horaEntradaEsperada ?? '--:--' }}</span>
+                                        </div>
+                                        <div class="col-6">
+                                            <small class="text-muted d-block mb-1">Salida Esperada</small>
+                                            <span class="fw-bold text-primary">{{
+                                                incidenciaSeleccionada?.horaSalidaEsperada ?? '--:--' }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer bg-white border-0 p-3 border-top border-muted">
+
+                    @if (!confirmandoJustificacion()) {
+                    <button type="button" class="btn btn-outline-primary rounded-2 px-4" data-bs-dismiss="modal">
+                        Cerrar
+                    </button>
+
+                    @if (incidenciaSeleccionada?.tipoIncidenciaId !== 5) {
+                    <button type="button"
+                        class="btn btn-success rounded-2 px-4 shadow-sm fw-bold d-flex align-items-center gap-2"
+                        (click)="confirmandoJustificacion.set(true)">
+                        <i class="bi bi-shield-check"></i> Justificar Registro
+                    </button>
+                    }
+
+                    } @else {
+                    <div
+                        class="w-100 d-flex justify-content-between align-items-center bg-warning bg-opacity-10 px-3 py-2 border-start border-warning border-4 rounded-2">
+                        <div class="text-dark small text-start">
+                            <i class="bi bi-exclamation-triangle-fill text-warning me-1"></i>
+                            <strong>¿Confirmar justificación?</strong><br>
+                            <span class="text-muted">El estado pasará a ser "Justificado".</span>
+                        </div>
+                        <div class="btn-group shadow-sm flex-shrink-0 ms-2">
+                            <button class="btn btn-success btn-sm px-3 fw-bold"
+                                (click)="justificar(); confirmandoJustificacion.set(false)">Confirmar</button>
+                            <button class="btn btn-outline-primary btn-sm px-3"
+                                (click)="confirmandoJustificacion.set(false)">Cancelar</button>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+table,
+thead {
+    background-color: transparent;
+}
+
+input[type="date"] {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background-color: #1b396a;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+    filter: invert(1);
+}
+
+#detalleIncidenciaModal .modal-content {
+    background-color: var(--bs-primary);
+    overflow: hidden;
+}
+
+#detalleIncidenciaModal .modal-body {
+    background-color: white;
+}
+
+.custom-chip {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    font-size: 0.75rem;
+    border-radius: 20px !important;
+    transition: all 0.2s ease;
+
+    &:hover {
+        filter: brightness(0.9);
+    }
+}
+
+.btn-check:checked+.custom-chip {
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.grafica-titulo {
+    color: #003366;
+}

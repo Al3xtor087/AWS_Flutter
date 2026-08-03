@@ -1,0 +1,69 @@
+/* Contenedor principal para alinear el ancho */
+.card-container {
+    width: 100%;
+    max-width: 450px;
+}
+
+/* Círculo para el ícono central (estilo limpio) */
+.icon-circle {
+    width: 80px;
+    height: 80px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Botón Institucional - Basado en los colores de tu Login y Navbar */
+.btn-institucional {
+    background-color: #5084d1; /* Azul del botón del login */
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: #495e7c; /* Un tono más oscuro al pasar el mouse */
+        color: #ffffff;
+    }
+
+    &:active {
+        background-color: #1b2f55; /* Azul marino de la barra superior */
+    }
+}
+
+/* Tarjeta de éxito lateral (estilo widget) */
+.success-widget {
+    border-radius: 8px;
+    border-left: 6px solid #198754 !important; /* Detalle verde institucional en el borde izquierdo */
+    background-color: #ffffff;
+}
+
+/* Botón de accesibilidad original */
+#btnAccesibilidad {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Soporte para modo oscuro si lo mantienes activo */
+:host-context([data-bs-theme="dark"]) {
+    .icon-circle {
+        background-color: #212529;
+        border-color: #495057;
+        i { color: #f8f9fa !important; }
+    }
+    .success-widget {
+        background-color: #212529;
+    }
+    .btn-institucional {
+        background-color: #5084d1;
+    }
+}

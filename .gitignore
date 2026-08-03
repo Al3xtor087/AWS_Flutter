@@ -1,0 +1,79 @@
+# ==============================================================================
+# GLOBAL / SYSTEM FILES
+# ==============================================================================
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+.history/
+
+# IDEs y Editores (VS Code, Android Studio, IntelliJ)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# ==============================================================================
+# ANGULAR (Frontend)
+# ==============================================================================
+# Bloquea node_modules y archivos generados en cualquier subcarpeta
+**/node_modules/
+**/dist/
+**/tmp/
+**/out-tsc/
+**/bazel-out/
+**/.angular/cache/
+**/coverage/
+**/.sass-cache/
+
+# ==============================================================================
+# FLUTTER / DART (Mobile)
+# ==============================================================================
+# Herramientas de compilación y caché de Dart
+**/.dart_tool/
+**/.packages
+**/.pub-cache/
+**/.pub/
+
+# Archivos de compilación de Android/iOS/Web
+**/build/
+**/flutter_export_environment.sh
+
+# Archivos de configuración local generados por Flutter
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.metadata
+
+# Excluir archivos de configuración con credenciales sensibles
+**/android/key.properties
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+
+# ==============================================================================
+# PYTHON / AWS LAMBDAS (Backend)
+# ==============================================================================
+# Caché de compilación de Python
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+
+# Entornos virtuales locales (vitales para que la IA no se trabe)
+**/.venv/
+**/venv/
+**/env/
+**/ENV/
+**/env.bak/
+
+# Si utilizas frameworks como Serverless o AWS SAM para tus Lambdas
+**/.serverless/
+**/.aws-sam/
+**/.pytest_cache/
+**/.htmlcov/
+**/.tox/

@@ -1,0 +1,238 @@
+Deploy this changeset? [y/N]: y
+
+2026-07-10 03:06:29 - Waiting for stack create/update to complete
+
+CloudFormation events from stack operations (refresh every 5.0 seconds)
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceStatus                         ResourceType                           LogicalResourceId                      ResourceStatusReason                 
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE_IN_PROGRESS                     AWS::CloudFormation::Stack             cit-modelo-dual-dev                    User Initiated                       
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         CrearAlumnoFunctionRole                -                                    
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         EliminarIncidenciaFunctionRole         -                                    
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         LoginUsuarioFunctionRole               -                                    
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         ObtenerAlumnosFunctionRole             -                                    
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         ObtenerTodosLosAlumnosFunctionRole     -                                    
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         RegistrarUsuarioFunctionRole           -                                    
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         ListarAsistenciasFunctionRole          -                                    
+CREATE_IN_PROGRESS                     AWS::DynamoDB::Table                   AlumnosBD                              -                                    
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         EliminarAlumnoFunctionRole             -                                    
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         ModificarAlumnoFunctionRole            -                                    
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         ObtenerAlumnoFunctionRole              -                                    
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         RegistrarAsistenciaFunctionRole        -                                    
+CREATE_IN_PROGRESS                     AWS::DynamoDB::Table                   AsistenciasBD                          -                                    
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         GeneradorIncidenciasFunctionRole       -                                    
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         AdminUsuariosFunctionRole              -                                    
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         PerfilUsuarioFunctionRole              -                                    
+CREATE_IN_PROGRESS                     AWS::DynamoDB::Table                   UsuariosBD                             -                                    
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         ListarUsuariosFunctionRole             -                                    
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         LoginUsuarioFunctionRole               Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         ObtenerTodosLosAlumnosFunctionRole     Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         ListarUsuariosFunctionRole             Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         CrearAlumnoFunctionRole                Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         EliminarIncidenciaFunctionRole         Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         ListarAsistenciasFunctionRole          Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         RegistrarAsistenciaFunctionRole        Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         ObtenerAlumnosFunctionRole             Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         EliminarAlumnoFunctionRole             Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         AdminUsuariosFunctionRole              Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::DynamoDB::Table                   AsistenciasBD                          Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         ModificarAlumnoFunctionRole            Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::DynamoDB::Table                   AlumnosBD                              Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         GeneradorIncidenciasFunctionRole       Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::DynamoDB::Table                   UsuariosBD                             Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         ObtenerAlumnoFunctionRole              Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         RegistrarUsuarioFunctionRole           Resource creation Initiated          
+CREATE_COMPLETE                        AWS::DynamoDB::Table                   AsistenciasBD                          -                                    
+CREATE_COMPLETE                        AWS::DynamoDB::Table                   UsuariosBD                             -                                    
+CREATE_COMPLETE                        AWS::DynamoDB::Table                   AlumnosBD                              -                                    
+CREATE_IN_PROGRESS                     AWS::IAM::Role                         PerfilUsuarioFunctionRole              Resource creation Initiated          
+CREATE_COMPLETE                        AWS::IAM::Role                         ObtenerTodosLosAlumnosFunctionRole     -                                    
+CREATE_COMPLETE                        AWS::IAM::Role                         LoginUsuarioFunctionRole               -                                    
+CREATE_COMPLETE                        AWS::IAM::Role                         CrearAlumnoFunctionRole                -                                    
+CREATE_COMPLETE                        AWS::IAM::Role                         ListarUsuariosFunctionRole             -                                    
+CREATE_COMPLETE                        AWS::IAM::Role                         EliminarIncidenciaFunctionRole         -                                    
+CREATE_COMPLETE                        AWS::IAM::Role                         ListarAsistenciasFunctionRole          -                                    
+CREATE_COMPLETE                        AWS::IAM::Role                         RegistrarAsistenciaFunctionRole        -                                    
+CREATE_COMPLETE                        AWS::IAM::Role                         ObtenerAlumnosFunctionRole             -                                    
+CREATE_COMPLETE                        AWS::IAM::Role                         EliminarAlumnoFunctionRole             -                                    
+CREATE_COMPLETE                        AWS::IAM::Role                         AdminUsuariosFunctionRole              -                                    
+CREATE_COMPLETE                        AWS::IAM::Role                         ModificarAlumnoFunctionRole            -                                    
+CREATE_COMPLETE                        AWS::IAM::Role                         GeneradorIncidenciasFunctionRole       -                                    
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  ObtenerTodosLosAlumnosFunction         -                                    
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  CrearAlumnoFunction                    -                                    
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  LoginUsuarioFunction                   -                                    
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  EliminarIncidenciaFunction             -                                    
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  ListarUsuariosFunction                 -                                    
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  ListarAsistenciasFunction              -                                    
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  EliminarAlumnoFunction                 -                                    
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  AdminUsuariosFunction                  -                                    
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  ObtenerAlumnosFunction                 -                                    
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  ModificarAlumnoFunction                -                                    
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  RegistrarAsistenciaFunction            -                                    
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  GeneradorIncidenciasFunction           -                                    
+CREATE_COMPLETE                        AWS::IAM::Role                         ObtenerAlumnoFunctionRole              -                                    
+CREATE_COMPLETE                        AWS::IAM::Role                         RegistrarUsuarioFunctionRole           -                                    
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  ObtenerAlumnoFunction                  -                                    
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  RegistrarUsuarioFunction               -                                    
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  CrearAlumnoFunction                    Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  ListarUsuariosFunction                 Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  LoginUsuarioFunction                   Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  ObtenerTodosLosAlumnosFunction         Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  ObtenerAlumnosFunction                 Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  RegistrarAsistenciaFunction            Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  EliminarIncidenciaFunction             Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  ListarAsistenciasFunction              Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  AdminUsuariosFunction                  Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  GeneradorIncidenciasFunction           Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  EliminarAlumnoFunction                 Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  ModificarAlumnoFunction                Resource creation Initiated          
+CREATE_IN_PROGRESS -                   AWS::Lambda::Function                  ListarUsuariosFunction                 Eventual consistency check initiated 
+CONFIGURATION_COMPLETE                                                                                                                                    
+CREATE_IN_PROGRESS -                   AWS::Lambda::Function                  CrearAlumnoFunction                    Eventual consistency check initiated 
+CONFIGURATION_COMPLETE                                                                                                                                    
+CREATE_IN_PROGRESS -                   AWS::Lambda::Function                  ObtenerAlumnosFunction                 Eventual consistency check initiated 
+CONFIGURATION_COMPLETE                                                                                                                                    
+CREATE_IN_PROGRESS -                   AWS::Lambda::Function                  LoginUsuarioFunction                   Eventual consistency check initiated 
+CONFIGURATION_COMPLETE                                                                                                                                    
+CREATE_IN_PROGRESS -                   AWS::Lambda::Function                  RegistrarAsistenciaFunction            Eventual consistency check initiated 
+CONFIGURATION_COMPLETE                                                                                                                                    
+CREATE_IN_PROGRESS -                   AWS::Lambda::Function                  ListarAsistenciasFunction              Eventual consistency check initiated 
+CONFIGURATION_COMPLETE                                                                                                                                    
+CREATE_IN_PROGRESS -                   AWS::Lambda::Function                  AdminUsuariosFunction                  Eventual consistency check initiated 
+CONFIGURATION_COMPLETE                                                                                                                                    
+CREATE_IN_PROGRESS -                   AWS::Lambda::Function                  GeneradorIncidenciasFunction           Eventual consistency check initiated 
+CONFIGURATION_COMPLETE                                                                                                                                    
+CREATE_IN_PROGRESS -                   AWS::Lambda::Function                  ObtenerTodosLosAlumnosFunction         Eventual consistency check initiated 
+CONFIGURATION_COMPLETE                                                                                                                                    
+CREATE_IN_PROGRESS -                   AWS::Lambda::Function                  EliminarIncidenciaFunction             Eventual consistency check initiated 
+CONFIGURATION_COMPLETE                                                                                                                                    
+CREATE_IN_PROGRESS -                   AWS::Lambda::Function                  EliminarAlumnoFunction                 Eventual consistency check initiated 
+CONFIGURATION_COMPLETE                                                                                                                                    
+CREATE_IN_PROGRESS -                   AWS::Lambda::Function                  ModificarAlumnoFunction                Eventual consistency check initiated 
+CONFIGURATION_COMPLETE                                                                                                                                    
+CREATE_IN_PROGRESS                     AWS::Events::Rule                      GeneradorIncidenciasFunctionCorteNoc   -                                    
+                                                                              turnoCron                                                                   
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  ObtenerAlumnoFunction                  Resource creation Initiated          
+CREATE_IN_PROGRESS                     AWS::Events::Rule                      GeneradorIncidenciasFunctionCorteNoc   Resource creation Initiated          
+                                                                              turnoCron                                                                   
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  RegistrarUsuarioFunction               Resource creation Initiated          
+CREATE_IN_PROGRESS -                   AWS::Lambda::Function                  ObtenerAlumnoFunction                  Eventual consistency check initiated 
+CONFIGURATION_COMPLETE                                                                                                                                    
+CREATE_IN_PROGRESS -                   AWS::Lambda::Function                  RegistrarUsuarioFunction               Eventual consistency check initiated 
+CONFIGURATION_COMPLETE                                                                                                                                    
+CREATE_COMPLETE                        AWS::Lambda::Function                  CrearAlumnoFunction                    -                                    
+CREATE_COMPLETE                        AWS::Lambda::Function                  ObtenerAlumnosFunction                 -                                    
+CREATE_COMPLETE                        AWS::Lambda::Function                  ListarUsuariosFunction                 -                                    
+CREATE_COMPLETE                        AWS::Lambda::Function                  LoginUsuarioFunction                   -                                    
+CREATE_COMPLETE                        AWS::Lambda::Function                  ObtenerTodosLosAlumnosFunction         -                                    
+CREATE_COMPLETE                        AWS::Lambda::Function                  AdminUsuariosFunction                  -                                    
+CREATE_COMPLETE                        AWS::Lambda::Function                  EliminarIncidenciaFunction             -                                    
+CREATE_COMPLETE                        AWS::Lambda::Function                  RegistrarAsistenciaFunction            -                                    
+CREATE_COMPLETE                        AWS::Lambda::Function                  GeneradorIncidenciasFunction           -                                    
+CREATE_COMPLETE                        AWS::Lambda::Function                  ListarAsistenciasFunction              -                                    
+CREATE_COMPLETE                        AWS::Lambda::Function                  EliminarAlumnoFunction                 -                                    
+CREATE_COMPLETE                        AWS::Lambda::Function                  ModificarAlumnoFunction                -                                    
+CREATE_COMPLETE                        AWS::Lambda::Function                  ObtenerAlumnoFunction                  -                                    
+CREATE_COMPLETE                        AWS::Lambda::Function                  RegistrarUsuarioFunction               -                                    
+CREATE_COMPLETE                        AWS::IAM::Role                         PerfilUsuarioFunctionRole              -                                    
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  PerfilUsuarioFunction                  -                                    
+CREATE_IN_PROGRESS                     AWS::Lambda::Function                  PerfilUsuarioFunction                  Resource creation Initiated          
+CREATE_IN_PROGRESS -                   AWS::Lambda::Function                  PerfilUsuarioFunction                  Eventual consistency check initiated 
+CONFIGURATION_COMPLETE                                                                                                                                    
+CREATE_IN_PROGRESS                     AWS::ApiGateway::RestApi               ApiModeloDual                          -                                    
+CREATE_COMPLETE                        AWS::Lambda::Function                  PerfilUsuarioFunction                  -                                    
+CREATE_IN_PROGRESS                     AWS::ApiGateway::RestApi               ApiModeloDual                          Resource creation Initiated          
+CREATE_FAILED                          AWS::ApiGateway::RestApi               ApiModeloDual                          Resource handler returned message:   
+                                                                                                                     "Errors found during import:         
+                                                                                                                     Unable to create resource at path    
+                                                                                                                     '/incidencias/{proxy+}': A sibling   
+                                                                                                                     ({id}) of this resource already has  
+                                                                                                                     a variable path part -- only one is  
+                                                                                                                     allowed (Service: ApiGateway, Status 
+                                                                                                                     Code: 400, Request ID: f065c2c1-     
+                                                                                                                     4292-45db-a4fb-6e7e6704df3a) (SDK    
+                                                                                                                     Attempt Count: 1)" (RequestToken: 5a 
+                                                                                                                     64d932-e5c4-58a5-9971-aebdcf0abf98,  
+                                                                                                                     HandlerErrorCode: InvalidRequest)    
+CREATE_FAILED                          AWS::Events::Rule                      GeneradorIncidenciasFunctionCorteNoc   Resource creation cancelled          
+                                                                              turnoCron                                                                   
+ROLLBACK_IN_PROGRESS                   AWS::CloudFormation::Stack             cit-modelo-dual-dev                    The following resource(s) failed to  
+                                                                                                                     create: [ApiModeloDual, GeneradorInc 
+                                                                                                                     idenciasFunctionCorteNocturnoCron].  
+                                                                                                                     Rollback requested by user.          
+DELETE_IN_PROGRESS                     AWS::Events::Rule                      GeneradorIncidenciasFunctionCorteNoc   -                                    
+                                                                              turnoCron                                                                   
+DELETE_IN_PROGRESS                     AWS::ApiGateway::RestApi               ApiModeloDual                          -                                    
+DELETE_COMPLETE                        AWS::ApiGateway::RestApi               ApiModeloDual                          -                                    
+DELETE_IN_PROGRESS                     AWS::Lambda::Function                  ObtenerTodosLosAlumnosFunction         -                                    
+DELETE_IN_PROGRESS                     AWS::Lambda::Function                  ModificarAlumnoFunction                -                                    
+DELETE_IN_PROGRESS                     AWS::Lambda::Function                  AdminUsuariosFunction                  -                                    
+DELETE_IN_PROGRESS                     AWS::Lambda::Function                  RegistrarUsuarioFunction               -                                    
+DELETE_IN_PROGRESS                     AWS::Lambda::Function                  ObtenerAlumnoFunction                  -                                    
+DELETE_IN_PROGRESS                     AWS::Lambda::Function                  PerfilUsuarioFunction                  -                                    
+DELETE_IN_PROGRESS                     AWS::Lambda::Function                  EliminarAlumnoFunction                 -                                    
+DELETE_IN_PROGRESS                     AWS::Lambda::Function                  CrearAlumnoFunction                    -                                    
+DELETE_IN_PROGRESS                     AWS::Lambda::Function                  EliminarIncidenciaFunction             -                                    
+DELETE_IN_PROGRESS                     AWS::Lambda::Function                  ListarAsistenciasFunction              -                                    
+DELETE_IN_PROGRESS                     AWS::Lambda::Function                  LoginUsuarioFunction                   -                                    
+DELETE_IN_PROGRESS                     AWS::Lambda::Function                  ObtenerAlumnosFunction                 -                                    
+DELETE_IN_PROGRESS                     AWS::Lambda::Function                  ListarUsuariosFunction                 -                                    
+DELETE_IN_PROGRESS                     AWS::Lambda::Function                  RegistrarAsistenciaFunction            -                                    
+DELETE_COMPLETE                        AWS::Lambda::Function                  EliminarIncidenciaFunction             -                                    
+DELETE_COMPLETE                        AWS::Lambda::Function                  PerfilUsuarioFunction                  -                                    
+DELETE_COMPLETE                        AWS::Lambda::Function                  ModificarAlumnoFunction                -                                    
+DELETE_COMPLETE                        AWS::Lambda::Function                  RegistrarUsuarioFunction               -                                    
+DELETE_COMPLETE                        AWS::Lambda::Function                  EliminarAlumnoFunction                 -                                    
+DELETE_COMPLETE                        AWS::Lambda::Function                  ListarAsistenciasFunction              -                                    
+DELETE_COMPLETE                        AWS::Lambda::Function                  AdminUsuariosFunction                  -                                    
+DELETE_COMPLETE                        AWS::Lambda::Function                  ObtenerAlumnosFunction                 -                                    
+DELETE_COMPLETE                        AWS::Lambda::Function                  LoginUsuarioFunction                   -                                    
+DELETE_COMPLETE                        AWS::Lambda::Function                  RegistrarAsistenciaFunction            -                                    
+DELETE_COMPLETE                        AWS::Lambda::Function                  ObtenerAlumnoFunction                  -                                    
+DELETE_COMPLETE                        AWS::Lambda::Function                  CrearAlumnoFunction                    -                                    
+DELETE_COMPLETE                        AWS::Lambda::Function                  ListarUsuariosFunction                 -                                    
+DELETE_COMPLETE                        AWS::Lambda::Function                  ObtenerTodosLosAlumnosFunction         -                                    
+DELETE_IN_PROGRESS                     AWS::IAM::Role                         EliminarIncidenciaFunctionRole         -                                    
+DELETE_IN_PROGRESS                     AWS::IAM::Role                         ModificarAlumnoFunctionRole            -                                    
+DELETE_IN_PROGRESS                     AWS::IAM::Role                         PerfilUsuarioFunctionRole              -                                    
+DELETE_IN_PROGRESS                     AWS::IAM::Role                         RegistrarUsuarioFunctionRole           -                                    
+DELETE_IN_PROGRESS                     AWS::IAM::Role                         EliminarAlumnoFunctionRole             -                                    
+DELETE_IN_PROGRESS                     AWS::IAM::Role                         AdminUsuariosFunctionRole              -                                    
+DELETE_IN_PROGRESS                     AWS::IAM::Role                         ObtenerAlumnosFunctionRole             -                                    
+DELETE_IN_PROGRESS                     AWS::IAM::Role                         LoginUsuarioFunctionRole               -                                    
+DELETE_IN_PROGRESS                     AWS::IAM::Role                         ObtenerAlumnoFunctionRole              -                                    
+DELETE_IN_PROGRESS                     AWS::IAM::Role                         RegistrarAsistenciaFunctionRole        -                                    
+DELETE_IN_PROGRESS                     AWS::IAM::Role                         CrearAlumnoFunctionRole                -                                    
+DELETE_IN_PROGRESS                     AWS::IAM::Role                         ObtenerTodosLosAlumnosFunctionRole     -                                    
+DELETE_IN_PROGRESS                     AWS::IAM::Role                         ListarUsuariosFunctionRole             -                                    
+DELETE_IN_PROGRESS                     AWS::IAM::Role                         ListarAsistenciasFunctionRole          -                                    
+DELETE_COMPLETE                        AWS::IAM::Role                         EliminarAlumnoFunctionRole             -                                    
+DELETE_COMPLETE                        AWS::IAM::Role                         ObtenerTodosLosAlumnosFunctionRole     -                                    
+DELETE_COMPLETE                        AWS::IAM::Role                         EliminarIncidenciaFunctionRole         -                                    
+DELETE_COMPLETE                        AWS::IAM::Role                         ObtenerAlumnosFunctionRole             -                                    
+DELETE_COMPLETE                        AWS::IAM::Role                         AdminUsuariosFunctionRole              -                                    
+DELETE_COMPLETE                        AWS::IAM::Role                         ListarAsistenciasFunctionRole          -                                    
+DELETE_COMPLETE                        AWS::IAM::Role                         RegistrarAsistenciaFunctionRole        -                                    
+DELETE_COMPLETE                        AWS::IAM::Role                         PerfilUsuarioFunctionRole              -                                    
+DELETE_COMPLETE                        AWS::IAM::Role                         CrearAlumnoFunctionRole                -                                    
+DELETE_COMPLETE                        AWS::IAM::Role                         ObtenerAlumnoFunctionRole              -                                    
+DELETE_COMPLETE                        AWS::IAM::Role                         ModificarAlumnoFunctionRole            -                                    
+DELETE_COMPLETE                        AWS::IAM::Role                         RegistrarUsuarioFunctionRole           -                                    
+DELETE_COMPLETE                        AWS::Events::Rule                      GeneradorIncidenciasFunctionCorteNoc   -                                    
+                                                                              turnoCron                                                                   
+DELETE_IN_PROGRESS                     AWS::Lambda::Function                  GeneradorIncidenciasFunction           -                                    
+DELETE_COMPLETE                        AWS::IAM::Role                         ListarUsuariosFunctionRole             -                                    
+DELETE_COMPLETE                        AWS::IAM::Role                         LoginUsuarioFunctionRole               -                                    
+DELETE_COMPLETE                        AWS::Lambda::Function                  GeneradorIncidenciasFunction           -                                    
+DELETE_IN_PROGRESS                     AWS::DynamoDB::Table                   AsistenciasBD                          -                                    
+DELETE_IN_PROGRESS                     AWS::IAM::Role                         GeneradorIncidenciasFunctionRole       -                                    
+DELETE_IN_PROGRESS                     AWS::DynamoDB::Table                   AlumnosBD                              -                                    
+DELETE_IN_PROGRESS                     AWS::DynamoDB::Table                   UsuariosBD                             -                                    
+DELETE_COMPLETE                        AWS::IAM::Role                         GeneradorIncidenciasFunctionRole       -                                    
+DELETE_COMPLETE                        AWS::DynamoDB::Table                   AsistenciasBD                          -                                    
+DELETE_COMPLETE                        AWS::DynamoDB::Table                   UsuariosBD                             -                                    
+DELETE_COMPLETE                        AWS::DynamoDB::Table                   AlumnosBD                              -                                    
+ROLLBACK_COMPLETE                      AWS::CloudFormation::Stack             cit-modelo-dual-dev                    -                                    
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Error: Failed to create/update the stack: cit-modelo-dual-dev, Waiter StackCreateComplete failed: Waiter encountered a terminal failure state: For expression"Stacks[].StackStatus" we matched expected path: "ROLLBACK_COMPLETE" at least once
